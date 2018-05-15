@@ -1,5 +1,9 @@
 package com.example.AnamolyDetectionApp;
 
+import java.io.*;
+
+import com.example.AnamolyDetectionApp.PostAd;
+
 import org.springframework.http.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,57 +75,43 @@ public class AnamolyDetectionAppApplication  implements CommandLineRunner {
     }
 	@Override
 	public void run(String... args) throws Exception {
-		String strr1= "4 year old";
-    	String strr2 = "I am punit";
+		PostAd post1 = repository.findByid("5af996a52288888b5fd34299");
+		
+		String strr1= post1.getTitle();
+    	String strr2 = post1.getDescription();
+    	String strr3 = post1.getCondition();
     	StringBuilder builder = new StringBuilder();
     	builder.append(strr1+" ");
     	builder.append(strr2);
     	String str= builder.toString();
+    	String str1 = str.toUpperCase();
     	
     	
-        String[] s1=str.split(" ");
+        String[] s1=str1.split(" ");
         String data = "days old,months old,years old,month old,year old,good condition,new condition,excellent condition,proper condition,perfect condition,working condition,barely used,used only,hardly used,gently used,rarely used,damage,without even a single scratch,without a scratch,without scratch,extremely good,scratchless,almost new,like new";
         data = data.replaceAll(",", " ");
-        String[] s2= data.split(" ");
-        System.out.println(str);
+        String data1 = data.toUpperCase();
+        String[] s2= data1.split(" ");
+        System.out.println(str1);
       
-        int t= checkEquality(s1,s2);
-        int wt= weightProduct(t,s2);
+        int t  = checkEquality(s1,s2);
+        int wt = weightProduct(t,s2);
         System.out.println("equal characters ="+t);
         System.out.println("weight count ="+wt);
        
-        if (t>1)
-            System.out.println("Almost like New");
-        else
-            System.out.println("Not New");
-		//repository.deleteAll();
-		//repository.save(new PostAd("New Car", "Best Car of all Time","Brand New"));
-		
-		
-		
-		/*
-		// save a couple of customers
-		repository.save(new Customer("Alice", "Smith"));
-		repository.save(new Customer("Bob", "Smith"));
+        if (t>=1 ) {
+        	if(strr3.equals("Brand New")) {
+        		System.out.println("Almost like New");
+        		post1.setCondition("Almost Like New");
+        		repository.save(post1);
+        		System.out.println("Task done");
+        		
+        	}
+            //System.out.println("Almost like New");
+        }
+        else {
+        	
+        }
 
-		// fetch all customers
-		System.out.println("Customers found with findAll():");
-		System.out.println("-------------------------------");
-		for (Customer customer : repository.findAll()) {
-			System.out.println(customer);
-		}
-		System.out.println();
-
-		// fetch an individual customer
-		System.out.println("Customer found with findByFirstName('Alice'):");
-		System.out.println("--------------------------------");
-		System.out.println(repository.findByFirstName("Alice"));
-
-		System.out.println("Customers found with findByLastName('Smith'):");
-		System.out.println("--------------------------------");
-		for (Customer customer : repository.findByLastName("Smith")) {
-			System.out.println(customer);
-		}
-		*/
 	}
 }

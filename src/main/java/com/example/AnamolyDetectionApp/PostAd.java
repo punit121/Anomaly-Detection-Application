@@ -1,6 +1,7 @@
 package com.example.AnamolyDetectionApp;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 
 public class PostAd {
@@ -19,6 +20,24 @@ public class PostAd {
 		this.condition= condition;
 		
 	}
+	
+	public String getId() {
+		return id;
+	}
+	public String getTitle() {
+        return title;
+    }
+	public String getDescription() {
+        return description;
+    }
+	public String getCondition() {
+        return condition;
+    }
+    public void setCondition(String condition) {
+        this.condition = condition;
+    }
+	
+	
 	@Override
     public String toString() {
         return String.format(
