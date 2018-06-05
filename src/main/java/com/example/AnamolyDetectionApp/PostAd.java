@@ -2,6 +2,8 @@ package com.example.AnamolyDetectionApp;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PostAd {
 
@@ -10,6 +12,7 @@ public class PostAd {
 	public String title;
 	public String description;
 	public String condition;
+	//public HashMap<String, Integer> anomaly;
 	
 	public PostAd() {}
 	
@@ -17,6 +20,7 @@ public class PostAd {
 		this.title = title;
 		this.description= description;
 		this.condition= condition;
+		
 		
 	}
 	

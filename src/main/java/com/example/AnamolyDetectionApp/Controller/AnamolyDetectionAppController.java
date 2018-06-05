@@ -1,7 +1,9 @@
 package com.example.AnamolyDetectionApp.Controller;
 
-import java.util.Map;
-import java.util.HashMap;
+import java.util.*;
+
+
+import javax.swing.text.html.HTMLDocument.Iterator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +18,8 @@ import com.example.AnamolyDetectionApp.CheckAnamoly;
 import com.example.AnamolyDetectionApp.PostAd;
 import com.example.AnamolyDetectionApp.PostAdRepository;
 import com.example.AnamolyDetectionApp.UpdateRepository;
+import com.example.AnamolyDetectionApp.db.AnomalyRepository;
+import com.example.AnamolyDetectionApp.db.Anomaly;
 
 @RestController
 public class AnamolyDetectionAppController {
@@ -29,31 +33,59 @@ public class AnamolyDetectionAppController {
 	@Autowired
 	CheckAnamoly checkAnamoly;
 	
+	@Autowired
+	AnomalyRepository anomalyrepository;
+	
 
 	@Autowired
 	PostAdRepository repository;
 	@RequestMapping(value="/getid", method = RequestMethod.GET)
 	@ResponseBody
-	public String getID( String id) {
-			    try{
-			    	run(id);
+	public Map<String, Integer> getID( String id) {
+		//Map<String, Integer> anamoly;    
+			try{
+			    	Map<String, Integer> anamoly =  	run(id);
+			    	return anamoly;
 			    }catch(Exception e) {
 			    	
 			    }
-			    return "Yahoo";
+			return null;
+			  
+				
+				
 			}
 	
-	public void run (String id) throws Exception{
+	@SuppressWarnings("rawtypes")
+	public Map<String, Integer> run (String id) throws Exception{
 		
 			 //id =  id;
 			PostAd post1 = repository.findByid(id);
 			
 			// Checking Anamoly in the PostAd
 
-	    	int t = checkAnamoly.CheckAnamolyById(post1);
-	    
+			Map<String, Integer> anamoly = checkAnamoly.CheckAnamolyById(post1);
+			Map.Entry<String, Integer> firstEntry = anamoly.entrySet().iterator().next();
+			Integer largestKey = firstEntry.getValue();
+			String largestKeyValue = firstEntry.getKey();
+			int count = 0;
+			for (Map.Entry<String, Integer> map : anamoly.entrySet()) {
+			    int key = map.getValue();
+			    if (key > largestKey) {
+				largestKey = key;
+				largestKeyValue = map.getKey();
+				
+			    }
+			    count++;
+			}
+			
+			/*System.out.println("Largest Key       : " + largestKey);
+			System.out.println("Largest Key Value : " + largestKeyValue);
+			System.out.println(Arrays.asList(anamoly));
+			*/
+			anomalyrepository.save(new Anomaly(id, anamoly));
 	        //updating the database 
-	        
+			
+	        int t=count;
 	        if (t>=1 ) {
 	  
 	        	String strr3 = post1.getCondition();
@@ -77,7 +109,9 @@ public class AnamolyDetectionAppController {
 	        // Call Python API 
 	        
 	        
-	        
+	        Map<String, Integer> result = new HashMap<>();
+			result.put(largestKeyValue,largestKey);
+			return anamoly;
 	        
 	        
 
