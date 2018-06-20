@@ -17,7 +17,7 @@ import org.springframework.util.ResourceUtils;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import com.example.AnamolyDetectionApp.PostAd;
+import com.example.AnamolyDetectionApp.PostAdEventRequest;
 //import com.jayway.jsonpath.internal.Utils;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -93,10 +93,10 @@ public class CheckAnamoly {
 
 		return anomaly;
 	}
-	public Map<String, Integer> CheckAnamolyById(PostAd post1) throws FileNotFoundException{
+	public Map<String, Integer> CheckAnamolyById(String title,String description) throws FileNotFoundException{
 				
-		String title= post1.getTitle();
-    	String description = post1.getDescription();
+		//String title= post1.getTitle();
+    	//String description = post1.getDescription();
     	//String strr3 = post1.getCondition();
     	StringBuilder builder = new StringBuilder();
     	builder.append(title+" ");
@@ -107,7 +107,7 @@ public class CheckAnamoly {
         //data = data.replaceAll(",", " ");
         //String s2[] = { "days old","months old","years old","month old","year old","good condition","new condition","excellent condition","proper condition","perfect condition","working condition","barely used","used only","hardly used","gently used","rarely used","damage","without even a single scratch","without a scratch","without scratch","extremely good","scratchless","almost new","like new"};
        // String[] s2= data1.split(" ");
-        //System.out.println(str1);
+        System.out.println(str1);
       
         Map<String, Integer> anomalyscore  = checkEqualityScore(str1, anomaliesWordList);
        // int wt = weightProduct(t, anomaliesWordList);
